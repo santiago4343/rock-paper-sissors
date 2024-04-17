@@ -1,21 +1,58 @@
 const options = ['rock', 'paper', 'sissors']
+let rounds = 0
+let computerScore = 0
+let playerScore = 0
 
 function getComputerChoice () {
     let random = Math.floor(Math.random()*options.length)
     return options[random]
 }
 
-const playerChoice = prompt('RPS?')
+function reset () {
+    rounds = 0
+    computerScore = 0
+    playerScore = 0
+}
 
-function rps (computer, player) {
+function playRound (computer, player) {
+    const playerChoice = prompt('RPS?')
     computer = getComputerChoice()
-    player= playerChoice
-    console.log(computer, player)
+    player = playerChoice.toLowerCase()
     if (computer === 'sissors' & player === 'rock' || computer === 'rock' & player === 'paper' || computer === 'paper' & player === 'sissors') {
-        return console.log('You win')
+        rounds++
+        ++playerScore
+        console.log('win')
+        return `You win, ${player} beats ${computer}!`
     } else if (computer == 'rock' & player === 'sissors' || computer === 'paper' & player === 'rock' || computer === 'sissors' & player === 'paper') {
-        return console.log('You lose')
+        ++computerScore
+        rounds++
+        console.log('lose')
+        return `You lose, ${computer} beats ${player}!`
+    } else if (computer === player) {
+        rounds++
+        console.log('tie')
+        return 'Its a tie!'
+    } else {
+        return 'Invalid Input'
     }
 }
 
-rps()
+function playGame () {
+    while (rounds<5) {
+        playRound()
+    }
+
+    if (computerScore > playerScore) {
+        reset()
+        return console.log('you lose')
+    } else if (playerScore > computerScore) {
+        reset()
+        return console.log('you win')
+    } else {
+        reset()
+        return console.log('tie')
+    }
+}
+
+
+playGame()
